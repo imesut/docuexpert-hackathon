@@ -1,3 +1,4 @@
+// Session.getActiveUser().getEmail()
 
 function onOpen(e) {
     DocumentApp.getUi().createAddonMenu()

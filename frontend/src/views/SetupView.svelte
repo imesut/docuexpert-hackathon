@@ -7,7 +7,7 @@
     import * as Card from "$lib/components/ui/card";
 
     import { Constants } from "../Constants";
-    import CopyButton from "./CopyButton.svelte";
+    import CopyButton from "./subviews/CopyButton.svelte";
     import * as Collapsible from "$lib/components/ui/collapsible";
     import { CaretSort, Pencil2, Plus } from "svelte-radix";
     import { Badge } from "$lib/components/ui/badge";
@@ -17,40 +17,31 @@
 
     import { Separator } from "$lib/components/ui/separator";
     import * as Accordion from "$lib/components/ui/accordion";
+    import { supabaseUrl } from "../model/BaseModel";
+    import { defaultExperts } from "../model/Data";
+    import { updateUserObject, user } from "../model/User.svelte";
+    import { OnboardingPhase } from "../model/Types";
 
-    var webhookUrl = Constants.base_url + "webhook";
+    var webhookUrl = supabaseUrl + "/rest/v1/transcripts";
 
-    let experts = $state([
-        {
-            abbvr: "TA",
-            name: "Todo Agent",
-            description:
-                "Keeps track of what has been talked; uses your meeting records and your comments to follow actions.",
-            additionalPrompt: "",
-            isDefaultExpert: true,
-        },
-        {
-            abbvr: "CE",
-            name: "Commercial Expert",
-            description: "Suggests and keeps commercial focused suggestions.",
-            additionalPrompt: "Always try to maximize profits.",
-            isDefaultExpert: true,
-        },
-        {
-            abbvr: "IP",
-            name: "Intellectual Property Expert",
-            description:
-                "Suggests and keeps your intellectual property rights guarenteed.",
-            additionalPrompt: "",
-            isDefaultExpert: true,
-        },
-    ]);
+    if ( user.custom_agents === null || user.custom_agents.length === 0 ){
+        user.custom_agents = defaultExperts
+    }
 
     var shouldPopupBeOpen = $state(false);
     var warningMessage = $state("");
-    var newExpertsAbbvr = $state("NE");
     var newExpertsName = $state("");
     var newExpertsRole = $state("");
+    var newExpertsAbbvr = $derived(
+        newExpertsName === ""
+            ? "NE"
+            : newExpertsName
+                  .trim()
+                  .split(/\s+/)
+                  .slice(0, 2)
+                  .map((word) => word.charAt(0).toUpperCase())
+                  .join(""),
+    );
 
     var newAgentAddAction = () => {
         if (newExpertsName.length > 3 && newExpertsRole.length > 20) {
@@ -58,12 +49,11 @@
                 abbvr: newExpertsAbbvr,
                 name: newExpertsName,
                 description: "Defined by you.",
-                additionalPrompt: newExpertsRole,
+                prompt: newExpertsRole,
+                isDefaultExpert: false,
             };
 
-            experts.push(object);
-            console.log(object, experts);
-            newExpertsAbbvr = "NE";
+            user.custom_agents.push(object);
             newExpertsName = "";
             newExpertsRole = "";
             warningMessage = "";
@@ -72,7 +62,7 @@
             warningMessage =
                 "Please enter 3+ characters for name and 20+ for role definition.";
         }
-    }
+    };
 </script>
 
 <div class={Constants.sizes.onboardingContainerProp}>
@@ -94,7 +84,7 @@
 
     <div class={Constants.sizes.onboardingWidth}>
         <Accordion.Root class="w-full">
-            {#each experts as expert}
+            {#each user.custom_agents as expert}
                 <Accordion.Item value={expert.abbvr}>
                     <Accordion.Trigger>
                         <div
@@ -108,8 +98,10 @@
                                     <Badge
                                         variant={expert.isDefaultExpert === true
                                             ? "default"
-                                            : "secondary"}>{expert.abbvr}</Badge
+                                            : "secondary"}
                                     >
+                                        {expert.abbvr}
+                                    </Badge>
                                     <span> {expert.name} </span>
                                     {#if expert.isDefaultExpert}
                                         <span class="text-xs">System</span>
@@ -126,7 +118,7 @@
                             <h3>Want to customize more?</h3>
                             <Textarea
                                 placeholder="If you want to fine-tune '{expert.name}'s suggestions, you can add a prompt. Otherwise system prompt will be applied."
-                                value={expert.additionalPrompt}
+                                value={expert.prompt}
                                 rows="5"
                             ></Textarea>
                         </div>
@@ -164,20 +156,7 @@
                             id="name"
                             placeholder="New Expert"
                             class="col-span-3"
-                            onchange={(e) => {
-                                let value = e.target.value;
-                                console.log(value);
-                                let initials = value
-                                    .trim()
-                                    .split(/\s+/)
-                                    .slice(0, 2)
-                                    .map((word) => word.charAt(0).toUpperCase())
-                                    .join("");
-                                newExpertsName = value;
-                                if (initials !== "") {
-                                    newExpertsAbbvr = initials;
-                                }
-                            }}
+                            bind:value={newExpertsName}
                         />
                     </div>
                     <div class="grid grid-cols-4 items-top gap-4">
@@ -188,7 +167,7 @@
                             class="col-span-3"
                             id="persona-prompt"
                             placeholder="Please define your expert's role in a concise manner."
-                            onchange={(e) => (newExpertsRole = e.target.value)}
+                            bind:value={newExpertsRole}
                             rows="5"
                         />
                     </div>
@@ -199,7 +178,9 @@
                         {warningMessage}
                     </span>
 
-                    <Button type="submit" onclick={ newAgentAddAction }>Add Expert</Button>
+                    <Button type="submit" onclick={newAgentAddAction}>
+                        Add Expert
+                    </Button>
                 </Dialog.Footer>
             </Dialog.Content>
         </Dialog.Root>
@@ -207,5 +188,11 @@
 
     <Separator class={Constants.sizes.onboardingWidth}></Separator>
 
-    <Button>{Constants.text.save_button}</Button>
+    <Button on:click={() => {
+        updateUserObject().then((userResponse) => {
+            user.onboarding_phase = OnboardingPhase.onboarding_completed;
+        });
+    }}>
+        {Constants.text.save_button}
+    </Button>
 </div>
