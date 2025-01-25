@@ -14,20 +14,21 @@
 
     let selectedRole = $state(Object.keys(roles)[0]);
     let suggestedPrompt = $derived(roles[selectedRole].prompt);
-
 </script>
 
-<div class="w-full">
-    <Label>I'm a,</Label>
+<div class="flex flex-col w-full space-y-4">
+    <center>
+        <Label>I'm a,</Label>
+    </center>
 
     <Select.Root
         onSelectedChange={(selection) => {
             selectedRole = selection.value;
             user.occupation = selection.value;
-            user.perspective = roles[selectedRole].prompt
+            user.perspective = roles[selectedRole].prompt;
         }}
     >
-        <Select.Trigger class={Constants.sizes.onboardingWidth}>
+        <Select.Trigger>
             <Select.Value
                 placeholder={roles[Object.keys(roles)[0]].role_name}
             />
@@ -39,7 +40,7 @@
         </Select.Content>
     </Select.Root>
 
-    <div class="w-full">
+    <div class="space-y-2">
         <Label for="persona-prompt">Your Perspective</Label>
         <Textarea
             id="persona-prompt"
@@ -48,15 +49,15 @@
             on:input={(e) => {
                 let value = e.target.value;
                 user.perspective = value;
-                console.log(e);
             }}
         />
     </div>
 
     <Button
         on:click={() => {
-            updateUserObject().then((userResponse) => {
-                user.onboarding_phase = OnboardingPhase.role_selected;
+            let newPhase = OnboardingPhase.role_selected;
+            updateUserObject(newPhase).then((userResponse) => {
+                user.onboarding_phase = newPhase;
             });
         }}
     >

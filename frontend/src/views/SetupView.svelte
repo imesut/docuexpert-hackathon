@@ -24,8 +24,8 @@
 
     var webhookUrl = supabaseUrl + "/rest/v1/transcripts";
 
-    if ( user.custom_agents === null || user.custom_agents.length === 0 ){
-        user.custom_agents = defaultExperts
+    if (user.custom_agents === null || user.custom_agents.length === 0) {
+        user.custom_agents = defaultExperts;
     }
 
     var shouldPopupBeOpen = $state(false);
@@ -188,11 +188,14 @@
 
     <Separator class={Constants.sizes.onboardingWidth}></Separator>
 
-    <Button on:click={() => {
-        updateUserObject().then((userResponse) => {
-            user.onboarding_phase = OnboardingPhase.onboarding_completed;
-        });
-    }}>
+    <Button
+        on:click={() => {
+            let newPhase = OnboardingPhase.onboarding_completed;
+            updateUserObject(newPhase).then((userResponse) => {
+                user.onboarding_phase = newPhase;
+            });
+        }}
+    >
         {Constants.text.save_button}
     </Button>
 </div>

@@ -20,37 +20,37 @@
   import { OnboardingPhase } from "./model/Types";
   import RoleSelection from "./views/RoleSelection.svelte";
   import { onMount } from "svelte";
+  import Loading from "./views/subviews/Loading.svelte";
+    import Bar from "./views/subviews/Bar.svelte";
 
   // Fetching initial variables from Google App Script.
-  // onMount(() => {
-  //   // @ts-ignore
-  //   let config = window.globalConfig
-  //   if (config) {
-  //     user.email = config.email;
-  //     fetchUser();
-  //     console.log(config.documentId)
-  //   }
-  // })
+  onMount(() => {
+    // @ts-ignore
+    let config = window.globalConfig
+    if (config) {
+      user.email = config.email;
+      fetchUser();
+      console.log(config.documentId)
+    }
+  })
 </script>
 
 <ModeWatcher />
-
+<Bar></Bar>
 <main class="container mx-auto p-6 space-y-12">
 
-  <ReviewView></ReviewView>
-
-
-  <!-- {#if user.onboarding_phase === ""}
-    Loading
+  {#if user.onboarding_phase === ""}
+    <Loading></Loading>
   {:else if user.onboarding_phase === OnboardingPhase.not_onboarded}
     <RoleSelection></RoleSelection>
   {:else if user.onboarding_phase === OnboardingPhase.role_selected}
     <SetupView></SetupView>
   {:else if user.onboarding_phase === OnboardingPhase.onboarding_completed}
     <ReviewView></ReviewView>
-  {/if} -->
+  {/if}
+
 </main>
 
-<p>
+<!-- <pre>
   {JSON.stringify(user, null, 2)}
-</p>
+</pre> -->
