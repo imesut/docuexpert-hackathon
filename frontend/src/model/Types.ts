@@ -21,3 +21,17 @@ export type Agent = {
     isDefaultExpert: boolean;
     prompt: string;
 }
+
+export type Suggestion = {
+    old_version : string;
+    new_version : string;
+    comments : string;
+    by : string;
+    remarks : SuggestionRemark[];
+}
+
+export type SuggestionRemark = {
+    appropriate : Boolean;
+    expertCode : string;
+    comment? : string;
+}
