@@ -1,5 +1,6 @@
 <script>
     import { Button } from "$lib/components/ui/button";
+    import { exampleTranscriptionText } from "../../model/Data";
 
     import {
         accessTokenUri,
@@ -9,20 +10,38 @@
     import { user } from "../../model/User.svelte";
 
     let didClickedRedirectionLink = $state(false);
+    let didClickedToSend = $state(false);
 </script>
 
 <!-- Checking if object has required values and the token is still valid. -->
-{#if user.docusign_credentials.accessToken && user.docusign_credentials.usersAccountId && Date.now() < user.docusign_credentials.accessTokenExpirationDate}
-    <Button class="p-6" on:click={() => createEnvelope()}>
+{#if user.docusign_credentials && user.docusign_credentials.accessToken && user.docusign_credentials.usersAccountId && Date.now() < user.docusign_credentials.accessTokenExpirationDate}
+    <Button
+        class="p-6"
+        on:click={() => {
+            didClickedToSend = true;
+            createEnvelope(
+                "im.mesut.yilmaz@gmail.com",
+                "Mesut Yılmaz",
+                "Sozlesme",
+                `<strong>SOZLEME BASLADI.</strong>${exampleTranscriptionText}`,
+            );
+        }}
+    >
         Send to Signature
     </Button>
+    {#if didClickedToSend}
+        <p class="text-xs">The agreement has been sent!</p>
+    {/if}
 {:else}
     <!-- Expired : renew token -->
-    {#if Date.now() > user.docusign_credentials.accessTokenExpirationDate}
+    {#if !user.docusign_credentials || Date.now() > user.docusign_credentials.accessTokenExpirationDate}
         <a
             href={accessTokenUri}
             target="_blank"
-            onclick={() => (didClickedRedirectionLink = true)}
+            on:click={() => {
+                console.log("clicked a tag");
+                didClickedRedirectionLink = true;
+            }}
         >
             Start with docusign
         </a>

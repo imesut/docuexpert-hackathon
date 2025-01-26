@@ -58,7 +58,7 @@
                 control revisions about this agreement</i
             >
 
-            <div class="flex space-x-2">
+            <div class="flex space-x-2 space-between w-full">
                 <Select.Root
                     selected={{
                         label: transcripts[selectedTranscript.index]
@@ -69,7 +69,7 @@
                         selectedTranscript.index = selection.value;
                     }}
                 >
-                    <Select.Trigger class="w-full">
+                    <Select.Trigger class="shrink">
                         <Select.Value placeholder={selectedTranscript} />
                     </Select.Trigger>
                     <Select.Content>
@@ -90,11 +90,11 @@
                     <Drawer.Content>
                         <Drawer.Header>
                             <Drawer.Title>
-                                <center class="m-4">Transcript</center>
+                                <span class="m-4">Transcript</span>
                             </Drawer.Title>
                             <Drawer.Description>
-                                <div class="w[100vw]">
-                                    <ScrollArea
+                                <div>
+                                    <ScrollArea orientation="horizontal"
                                         class="h-[60vh] w-[80vw] mx-auto rounded-md border"
                                     >
                                         <pre>

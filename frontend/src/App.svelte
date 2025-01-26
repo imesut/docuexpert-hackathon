@@ -15,13 +15,6 @@
   import { onMount } from "svelte";
   import Loading from "./views/subviews/Loading.svelte";
   import Bar from "./views/subviews/Bar.svelte";
-  import { accessTokenUri } from "./model/Esignature"
-
-
-  console.log(accessTokenUri)
-
-
-// console.log("accessToken", accessToken)
 
   // Fetching initial variables from Google App Script.
   onMount(() => {

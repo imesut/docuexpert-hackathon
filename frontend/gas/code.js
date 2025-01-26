@@ -1,16 +1,17 @@
 // Session.getActiveUser().getEmail()
+// Session.getActiveUser().getEmail()
 
 function onOpen(e) {
 
     DocumentApp.getUi()
-        .createMenu('Your Custom Menu')
-        .addItem('Open My App', 'showSidebar')
+        .createMenu('docuexpert')
+        .addItem('Start', 'showSidebar')
         .addToUi();
 
-    // DocumentApp.getUi()
-    //     .createAddonMenu()
-    //     .addItem("Show sidebar", "showSidebar")
-    //     .addToUi();
+    DocumentApp.getUi()
+        .createAddonMenu()
+        .addItem("docuexpert", "showSidebar")
+        .addToUi();
 }
 
 function onInstall(e) {
@@ -21,7 +22,7 @@ function showSidebar() {
     var ui = HtmlService
         .createTemplateFromFile('gas/sidebar')
         .evaluate()
-        .setTitle("My Svelte+Material Sidebar");
+        .setTitle("docuexpert | Transcripts & AI Experts for Agreements");
     DocumentApp.getUi().showSidebar(ui);
 }
 

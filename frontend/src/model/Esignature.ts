@@ -49,7 +49,7 @@ const userInfoUri = `${baseUri}/oauth/userinfo`
 
 // if credential is expired show a button for expiration
 // access token with Implicit Grant
-export let accessTokenUri = `${authBaseUrl}?response_type=token&scope=signature&client_id=${integrationKey}&redirect_uri=${redirectUrl}`
+export let accessTokenUri = `${authBaseUrl}?response_type=token&scope=signature%20cors&client_id=${integrationKey}&redirect_uri=${redirectUrl}`
 
 export const getLatestDocusignCredentials = async () => {
     console.log("getLatestDocusignCredentials", Date.now(), user)
@@ -99,6 +99,58 @@ const getDocusignUserCredentials = async () => {
 
 }
 
-export const createEnvelope = () => {
-    console.log("creating envelope with user credentials", user.docusign_credentials)
+export const createEnvelope = async (recipientEmail: string, recipientFullName: string, documentTitle: string, htmlContent: string) => {
+    console.log("creating envelope with user credentials")
+    const base64Document = btoa(htmlContent);
+
+    const envelope = {
+        emailSubject: documentTitle,
+        documents: [{
+            documentBase64: base64Document,
+            name: documentTitle,
+            fileExtension: 'html',
+            documentId: '1'
+        }],
+        recipients: {
+            signers: [{
+                email: recipientEmail,
+                name: recipientFullName,
+                recipientId: '1',
+                routingOrder: '1',
+                tabs: {
+                    signHereTabs: [{
+                        anchorString: '/signature/',
+                        anchorUnits: 'pixels',
+                        anchorXOffset: '20',
+                        anchorYOffset: '10'
+                    }]
+                }
+            }]
+        },
+        status: 'sent'
+    };
+
+    let url = `${user.docusign_credentials.usersBaseUri}/restapi/v2.1/accounts/${user.docusign_credentials.usersAccountId}/envelopes`
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${user.docusign_credentials.accessToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(envelope),
+        credentials: "omit"
+    });
+
+    console.log(response)
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Envelope creation failed:', errorText);
+        return;
+    }
+
+    const result = await response.json();
+    console.log(result)
+    return result.envelopeId;
 }
