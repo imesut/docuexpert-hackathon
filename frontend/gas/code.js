@@ -7,11 +7,6 @@ function onOpen(e) {
         .createMenu('docuexpert')
         .addItem('Start', 'showSidebar')
         .addToUi();
-
-    DocumentApp.getUi()
-        .createAddonMenu()
-        .addItem("docuexpert", "showSidebar")
-        .addToUi();
 }
 
 function onInstall(e) {
