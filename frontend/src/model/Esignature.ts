@@ -99,7 +99,7 @@ const getDocusignUserCredentials = async () => {
 
 }
 
-export const createEnvelope = async (recipientEmail: string, recipientFullName: string, documentTitle: string, htmlContent: string) => {
+export const createEnvelope = async (recipientEmail: string, recipientFullName: string, documentTitle: string, htmlContent: string) : Promise<object|undefined> => {
     console.log("creating envelope with user credentials")
     const base64Document = btoa(htmlContent);
 
@@ -132,25 +132,24 @@ export const createEnvelope = async (recipientEmail: string, recipientFullName: 
 
     let url = `${user.docusign_credentials.usersBaseUri}/restapi/v2.1/accounts/${user.docusign_credentials.usersAccountId}/envelopes`
 
-    const response = await fetch(url, {
+    const response = await fetch("https://iskmjdptvowmwziqiiqg.supabase.co/functions/v1/finalize-agreement", {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${user.docusign_credentials.accessToken}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(envelope),
-        credentials: "omit"
+        body: JSON.stringify({
+            userUrl : url,
+            envelopeObject : envelope,
+            token : user.docusign_credentials.accessToken
+        })
     });
-
-    console.log(response)
 
     if (!response.ok) {
         const errorText = await response.text();
         console.error('Envelope creation failed:', errorText);
-        return;
+        return undefined;
     }
 
     const result = await response.json();
-    console.log(result)
-    return result.envelopeId;
+    return result;
 }
