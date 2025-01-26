@@ -5,7 +5,7 @@
     import { Label } from "$lib/components/ui/label/index.js";
     import { Textarea } from "$lib/components/ui/textarea";
     import { Button } from "$lib/components/ui/button";
-    import { Value } from "svelte-radix";
+    import { Check, Value } from "svelte-radix";
     import { Constants } from "../Constants";
 
     import { roles } from "../model/Data";
@@ -16,9 +16,9 @@
     let suggestedPrompt = $derived(roles[selectedRole].prompt);
 </script>
 
-<div class="flex flex-col w-full space-y-4">
+<div class="flex flex-col w-full space-y-4 items-center">
     <center>
-        <Label>I'm a,</Label>
+        <Label>Profile</Label>
     </center>
 
     <Select.Root
@@ -40,9 +40,15 @@
         </Select.Content>
     </Select.Root>
 
-    <div class="space-y-2">
-        <Label for="persona-prompt">Your Perspective</Label>
+    <div class="space-y-4 w-full flex flex-col">
+        <Label for="persona-prompt">Provide your Profile and Goals</Label>
+        <span class="text-xs">
+            Your contract will be edited based on the prompt you provide.
+            Therefore, please write a text introducing your profile and
+            outlining your goals.
+        </span>
         <Textarea
+            class="w-full"
             id="persona-prompt"
             value={suggestedPrompt}
             rows="4"

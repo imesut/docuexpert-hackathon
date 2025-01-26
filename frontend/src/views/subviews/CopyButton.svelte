@@ -19,7 +19,7 @@
     };
 </script>
 
-<Button onclick={handleCopy}>
+<Button onclick={handleCopy} variant="outline">
     {#if $copied}
         <Check /> Copied
     {:else}

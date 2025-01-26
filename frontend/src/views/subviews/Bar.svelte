@@ -1,3 +1,9 @@
-<div class="w-full bg-slate-300 p-2">
-    <center> Logo </center>
+
+
+<div class="bg-slate-50 p-2 text-center">
+  <center>
+    <span class="text-2xl mt-4 mb-4">
+      docu<span class="text-purple-600">expert</span>
+    </span>
+  </center>
 </div>

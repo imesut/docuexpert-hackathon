@@ -1,6 +1,6 @@
 export let roles = {
     seller: {
-        role_name: "Seller",
+        role_name: "Supplier",
         prompt: "I want to be sure about my services can be sold.",
     },
     buyer: {
@@ -8,7 +8,7 @@ export let roles = {
         prompt: "I want to be sure about my company can benefit from this purchase.",
     },
     legal_person: {
-        role_name: "Legal Person",
+        role_name: "Legal Professional",
         prompt: "I want to be sure about this agreement guarantees the legal compliance and preserve our rights.",
     },
 };

@@ -29,6 +29,10 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.0",
+    "@types/docusign-esign": "^5.19.7",
+    "docusign-esign": "^8.0.1",
+    "jose": "^5.9.6",
+    "jsonwebtoken": "^9.0.2",
     "mode-watcher": "^0.5.0",
     "svelte-radix": "^2.0.1"
   }

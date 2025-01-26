@@ -6,7 +6,15 @@ export type User = {
     custom_agents: Agent[];
     occupation: string;
     perspective: string;
+    docusign_credentials: DocusingCredentials;
 };
+
+export type DocusingCredentials = {
+    accessToken : string;
+    accessTokenExpirationDate : number;
+    usersAccountId : string;
+    usersBaseUri : string;
+}
 
 export enum OnboardingPhase {
     not_onboarded = "not_onboarded",

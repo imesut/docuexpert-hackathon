@@ -66,21 +66,47 @@
 </script>
 
 <div class={Constants.sizes.onboardingContainerProp}>
-    <h1 class="text-3xl">Setup</h1>
+    <!-- <h1 class="text-3xl">Setup</h1> -->
 
-    <h2 class="text-xl">Bind your Transcriber Agent</h2>
+    <h2 class="text-xl text-center">
+        Connect <span class="mt-4 mb-4 border p-2 rounded-md">
+            docu<span class="text-purple-600">expert</span>
+        </span> to Meeting Transcription Tool
+    </h2>
 
-    <div>
+    <p class="text-sm text-center">
+        docuexpert can talk with your transciber like Fathom.video, Spiky.ai,
+        etc. Feel free to use your favorite meeting assistant and bind your
+        assistant's insights to docuexpert's intelligence.
+        <br /><br />
+        1. Copy this link <br />
+        2. Go to your Meeting Tool Preferences <br />
+        3. Add docuexpert webhook to transcript output.
+        <br />
+    </p>
+
+    <div class="text-center space-y-4">
         Here's your webhook:
-        <p>
-            <u>{webhookUrl}</u>
-            <CopyButton text={webhookUrl} />
-        </p>
+        <u>{webhookUrl}</u>
+        <CopyButton text={webhookUrl} />
     </div>
 
     <Separator class={Constants.sizes.onboardingWidth}></Separator>
 
-    <h2 class="text-xl">Meet your Experts</h2>
+    <div class="flex flex-col space-y-4 items-center text-center">
+        <h2 class="text-xl">Edit your Experts</h2>
+
+        <p class="text-sm">
+            Each Expert is designed with unique capabilities tailored to
+            different needs. Select the expert that aligns with your goals to
+            ensure optimal contract editing and personalization.
+            <br /><br />
+            <i>
+                Provide your prompt, and let the expert handle the rest with
+                precision and efficiency.
+            </i>
+        </p>
+    </div>
 
     <div class={Constants.sizes.onboardingWidth}>
         <Accordion.Root class="w-full">

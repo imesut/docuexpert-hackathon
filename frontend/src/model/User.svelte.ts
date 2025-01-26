@@ -1,5 +1,5 @@
 import { supabase } from "./BaseModel"
-import type { OnboardingPhase, User } from "./Types"
+import type { DocusingCredentials, OnboardingPhase, User } from "./Types"
 
 export let user = $state<User>({
     id: 0,
@@ -7,7 +7,13 @@ export let user = $state<User>({
     onboarding_phase: "",
     custom_agents: [],
     occupation: "",
-    perspective: ""
+    perspective: "",
+    docusign_credentials: {
+        accessToken: "",
+        accessTokenExpirationDate : 0,
+        usersAccountId : "",
+        usersBaseUri : "",
+    }
 })
 
 
@@ -32,6 +38,18 @@ export const updateUserObject = async (new_phase : OnboardingPhase) => {
             occupation: user.occupation,
             perspective: user.perspective,
             custom_agents: user.custom_agents
+        })
+        .eq('email', user.email)
+        .select()
+
+    return data[0] as User
+}
+
+export const updateDocusignCredentials = async () => {
+    const { data, error } = await supabase()
+        .from('users')
+        .update({
+            docusign_credentials : user.docusign_credentials
         })
         .eq('email', user.email)
         .select()
