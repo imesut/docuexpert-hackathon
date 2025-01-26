@@ -1,9 +1,16 @@
 // Session.getActiveUser().getEmail()
 
 function onOpen(e) {
-    DocumentApp.getUi().createAddonMenu()
-        .addItem("Show sidebar", "showSidebar")
+
+    DocumentApp.getUi()
+        .createMenu('Your Custom Menu')
+        .addItem('Open My App', 'showSidebar')
         .addToUi();
+
+    // DocumentApp.getUi()
+    //     .createAddonMenu()
+    //     .addItem("Show sidebar", "showSidebar")
+    //     .addToUi();
 }
 
 function onInstall(e) {

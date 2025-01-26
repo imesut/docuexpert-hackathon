@@ -30,6 +30,7 @@
         fetchTranscripts,
     } from "../model/Transcript.svelte";
     import Loading from "./subviews/Loading.svelte";
+    import EsignatureAuthView from "./subviews/EsignatureAuthView.svelte";
 
     let expertList =
         user.custom_agents && user.custom_agents.length > 0
@@ -141,7 +142,9 @@
     <div id="send-to-signature" class="flex flex-col pt-6 pb-8 space-y-2">
         <h2 class="text-xl">Ready to Sign?</h2>
         <p>If the revisions are done, send agreement to signers.</p>
-        <Button class="p-6">Send to Signature</Button>
+
+        <EsignatureAuthView></EsignatureAuthView>
+
     </div>
 
 </div>
