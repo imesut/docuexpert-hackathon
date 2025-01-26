@@ -32,6 +32,8 @@
     import Loading from "./subviews/Loading.svelte";
     import EsignatureAuthView from "./subviews/EsignatureAuthView.svelte";
 
+    let didUserInquiredAI = $state(false);
+
     let expertList =
         user.custom_agents && user.custom_agents.length > 0
             ? user.custom_agents
@@ -53,12 +55,12 @@
             <Loading text="Fetching Transcriptions"></Loading>
         {:then loadedData}
             <h2 class="text-xl">Select a transcript</h2>
-            <i class="text-xs"
-                >Use a transcript from a meeting to generate insights and
-                control revisions about this agreement</i
-            >
+            <i class="text-xs">
+                Use a transcript from a meeting to generate insights and control
+                revisions about this agreement
+            </i>
 
-            <div class="flex space-x-2 space-between w-full">
+            <div class="flex flex-col space-y-1 w-full space-between">
                 <Select.Root
                     selected={{
                         label: transcripts[selectedTranscript.index]
@@ -69,7 +71,7 @@
                         selectedTranscript.index = selection.value;
                     }}
                 >
-                    <Select.Trigger class="shrink">
+                    <Select.Trigger class="w-full">
                         <Select.Value placeholder={selectedTranscript} />
                     </Select.Trigger>
                     <Select.Content>
@@ -81,11 +83,19 @@
                     </Select.Content>
                 </Select.Root>
 
+                <span class="text-xs">
+                    You met at {new Date(
+                        transcripts[selectedTranscript.index].created_at,
+                    ).toLocaleString()}
+                
+
                 <!-- A preview of transcript -->
 
                 <Drawer.Root>
                     <Drawer.Trigger>
-                        <Button class="text-xs">View Transcript</Button>
+                        <Button class="text-xs" variant="ghost">
+                            View Transcript
+                        </Button>
                     </Drawer.Trigger>
                     <Drawer.Content>
                         <Drawer.Header>
@@ -94,12 +104,13 @@
                             </Drawer.Title>
                             <Drawer.Description>
                                 <div>
-                                    <ScrollArea orientation="horizontal"
+                                    <ScrollArea
+                                        orientation="horizontal"
                                         class="h-[60vh] w-[80vw] mx-auto rounded-md border"
                                     >
                                         <pre>
-                            {exampleTranscriptionText}
-                        </pre>
+                        {exampleTranscriptionText}
+                    </pre>
                                     </ScrollArea>
                                 </div>
                             </Drawer.Description>
@@ -109,33 +120,41 @@
                         </Drawer.Footer>
                     </Drawer.Content>
                 </Drawer.Root>
+            </span>
             </div>
         {:catch}
             <span class="text-xs p-2" style="color:red">
                 Error while fetching transcirpts.
             </span>
         {/await}
-        <span class="text-xs">
-            You met at {new Date(
-                transcripts[selectedTranscript.index].created_at,
-            ).toLocaleString()}
-        </span>
-
-        <p class="text-sm">
-            Generate actionable insights from defined experts (AI Agents)
-        </p>
-
-        <Button class="p-6">Generate Expert Insights</Button>
     </div>
 
-    <!-- TODOS view -->
+    {#if !didUserInquiredAI}
+        <div id="sign-button-area" class="flex flex-col space-y-4">
+            <h2 class="text-xl">Generate Insights</h2>
+            <p class="text-sm">
+                Generate actionable insights from defined experts (AI Agents)
+            </p>
 
-    <div id="actionable-insights" class="pt-4 space-y-2">
-        <h2 class="text-xl">Actionable Insights</h2>
-        {#each exampleSuggestions as suggestion}
-            <SuggestionCard {expertNames} {suggestion}></SuggestionCard>
-        {/each}
-    </div>
+            <Button
+                class="p-6"
+                on:click={() => {
+                    didUserInquiredAI = true;
+                }}
+            >
+                Generate Expert Insights
+            </Button>
+        </div>
+
+        <!-- TODOS view -->
+    {:else}
+        <div id="actionable-insights" class="pt-4 space-y-2">
+            <h2 class="text-xl">Experts' Insights</h2>
+            {#each exampleSuggestions as suggestion}
+                <SuggestionCard {expertNames} {suggestion}></SuggestionCard>
+            {/each}
+        </div>
+    {/if}
 
     <!-- Ready to Sign Document -->
 
@@ -144,7 +163,5 @@
         <p>If the revisions are done, send agreement to signers.</p>
 
         <EsignatureAuthView></EsignatureAuthView>
-
     </div>
-
 </div>

@@ -60,6 +60,7 @@
     <!-- Expired : renew token -->
     {#if !user.docusign_credentials || Date.now() > user.docusign_credentials.accessTokenExpirationDate}
         <a
+        class="underline"
             href={accessTokenUri}
             target="_blank"
             onclick={() => {

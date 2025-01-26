@@ -53,3 +53,21 @@ function getTextPosition(searchText) {
     }
     return undefined
 }
+
+function replaceText(oldText, newText){
+    var doc = DocumentApp.getActiveDocument();
+      const documentTab = doc.getActiveTab().asDocumentTab();
+      var body = doc.getBody();
+  
+      for (var i = 0; i < body.getNumChildren(); i++) {
+          var paragraph = body.getChild(i);
+          var text = paragraph.getText();
+          var index = text.indexOf(oldText);
+          if (index !== -1) {
+              paragraph.asText().replaceText(oldText, newText)
+              return true
+          }
+      }
+      return undefined
+  }
+  

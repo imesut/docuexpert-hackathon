@@ -22,3 +22,18 @@ export const bridgeFocusToText = (text, callback) => {
         })
         .focusToText(text);
 }
+
+
+export const bridgeReplaceText = (oldText, newText, callback) => {
+    console.log("bridgeReplaceText")
+    google.script.run
+        .withSuccessHandler(function (result) {
+            console.log(result)
+            callback(result)
+        })
+        .withFailureHandler(function (error) {
+            console.log(error)
+            callback(undefined)
+        })
+        .replaceText(oldText, newText);
+}
