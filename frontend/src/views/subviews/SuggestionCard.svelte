@@ -6,13 +6,21 @@
     import { Badge } from "$lib/components/ui/badge";
     import Separator from "$lib/components/ui/separator/separator.svelte";
     import * as Popover from "$lib/components/ui/popover";
-    import type { Suggestion } from "@/model/Types";
+    import type { Suggestion } from "../../model/Types";
+    import { bridgeFocusToText } from "../../model/Bridge";
 
     let { expertNames, suggestion } = $props();
     let collapse = $state(false);
 </script>
 
-<Card.Root class={collapse ? "opacity-60" : ""}>
+<Card.Root
+    class={collapse ? "opacity-60" : ""}
+    on:click={() => {
+        // Clicked to the suggestion
+        bridgeFocusToText(suggestion.old_version, ()=>{})
+        console.log("Clicked to the suggestion", suggestion.old_version);
+    }}
+>
     <Card.Content class="space-y-2 p-4">
         <div class="flex justify-between">
             <div class="flex flex-col">

@@ -139,7 +139,7 @@
 
     <!-- Ready to Sign Document -->
 
-    <div id="send-to-signature" class="flex flex-col pt-6 pb-8 space-y-2">
+    <div id="send-to-signature" class="flex flex-col pt-6 pb-8 space-y-4">
         <h2 class="text-xl">Ready to Sign?</h2>
         <p>If the revisions are done, send agreement to signers.</p>
 

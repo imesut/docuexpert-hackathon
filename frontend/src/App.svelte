@@ -16,6 +16,10 @@
   import Loading from "./views/subviews/Loading.svelte";
   import Bar from "./views/subviews/Bar.svelte";
 
+  const onUserEmailReceived = (value) => {
+    console.log("onUserEmailReceived", value)
+  }
+
   // Fetching initial variables from Google App Script.
   onMount(() => {
     // @ts-ignore
@@ -23,13 +27,13 @@
     if (config) {
       user.email = config.email;
       fetchUser();
-      console.log(config.documentId);
     }
   });
 </script>
 
 <ModeWatcher />
 <Bar></Bar>
+
 <main class="container mx-auto p-6 space-y-12">
   {#if user.onboarding_phase === ""}
     <Loading></Loading>
