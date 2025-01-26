@@ -44,10 +44,6 @@
         didUpdatedTokenInDb = true;
       });
     }
-
-    // var url = new URL(currentUrl);
-    // var emailInUrl = url.searchParams.get("email");
-    // email = emailInUrl ? emailInUrl! : "";
   });
 </script>
 

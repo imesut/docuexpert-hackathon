@@ -32,6 +32,32 @@
     import Loading from "./subviews/Loading.svelte";
     import EsignatureAuthView from "./subviews/EsignatureAuthView.svelte";
 
+    import { inquireAI } from "../model/AIModel";
+    import { bridgeGetAgreementText } from "../model/Bridge";
+
+    let suggestions = $state({ suggestions: [] });
+
+    let onAgreementTextReceived = async (value) => {
+
+        console.log("ReviewView", "onAgreementTextReceived", "agreementText", value)
+
+        let transcriptText = transcripts[selectedTranscript.index].body;
+        let suggestionsResult = await inquireAI(
+            value,
+            user.custom_agents,
+            transcriptText,
+        );
+
+
+        console.log("ReviewView", "onAgreementTextReceived", "json stringify", JSON.stringify({"transcriptText" : transcriptText, "agreementText" : agreementText}))
+
+        // console.log("ReviewView", "onAgreementTextReceived", "agents / transcript", transcriptText)
+
+        if (suggestionsResult) {
+            suggestions.suggestions = suggestionsResult;
+        }
+    };
+
     let didUserInquiredAI = $state(false);
 
     let expertList =
@@ -87,40 +113,39 @@
                     You met at {new Date(
                         transcripts[selectedTranscript.index].created_at,
                     ).toLocaleString()}
-                
 
-                <!-- A preview of transcript -->
+                    <!-- A preview of transcript -->
 
-                <Drawer.Root>
-                    <Drawer.Trigger>
-                        <Button class="text-xs" variant="ghost">
-                            View Transcript
-                        </Button>
-                    </Drawer.Trigger>
-                    <Drawer.Content>
-                        <Drawer.Header>
-                            <Drawer.Title>
-                                <span class="m-4">Transcript</span>
-                            </Drawer.Title>
-                            <Drawer.Description>
-                                <div>
-                                    <ScrollArea
-                                        orientation="horizontal"
-                                        class="h-[60vh] w-[80vw] mx-auto rounded-md border"
-                                    >
-                                        <pre>
+                    <Drawer.Root>
+                        <Drawer.Trigger>
+                            <Button class="text-xs" variant="ghost">
+                                View Transcript
+                            </Button>
+                        </Drawer.Trigger>
+                        <Drawer.Content>
+                            <Drawer.Header>
+                                <Drawer.Title>
+                                    <span class="m-4">Transcript</span>
+                                </Drawer.Title>
+                                <Drawer.Description>
+                                    <div>
+                                        <ScrollArea
+                                            orientation="horizontal"
+                                            class="h-[60vh] w-[80vw] mx-auto rounded-md border"
+                                        >
+                                            <pre>
                         {exampleTranscriptionText}
                     </pre>
-                                    </ScrollArea>
-                                </div>
-                            </Drawer.Description>
-                        </Drawer.Header>
-                        <Drawer.Footer>
-                            <Drawer.Close>Close</Drawer.Close>
-                        </Drawer.Footer>
-                    </Drawer.Content>
-                </Drawer.Root>
-            </span>
+                                        </ScrollArea>
+                                    </div>
+                                </Drawer.Description>
+                            </Drawer.Header>
+                            <Drawer.Footer>
+                                <Drawer.Close>Close</Drawer.Close>
+                            </Drawer.Footer>
+                        </Drawer.Content>
+                    </Drawer.Root>
+                </span>
             </div>
         {:catch}
             <span class="text-xs p-2" style="color:red">
@@ -140,6 +165,8 @@
                 class="p-6"
                 on:click={() => {
                     didUserInquiredAI = true;
+                    console.log(user.custom_agents, $state.snapshot(transcripts[selectedTranscript.index].body))
+                    bridgeGetAgreementText(onAgreementTextReceived);
                 }}
             >
                 Generate Expert Insights
@@ -150,9 +177,14 @@
     {:else}
         <div id="actionable-insights" class="pt-4 space-y-2">
             <h2 class="text-xl">Experts' Insights</h2>
-            {#each exampleSuggestions as suggestion}
-                <SuggestionCard {expertNames} {suggestion}></SuggestionCard>
-            {/each}
+
+            {#if suggestions.suggestions.length > 0}
+                {#each suggestions.suggestions as suggestion}
+                    <SuggestionCard {expertNames} {suggestion}></SuggestionCard>
+                {/each}
+                {:else}
+                <Loading></Loading>
+            {/if}
         </div>
     {/if}
 

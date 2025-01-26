@@ -37,3 +37,18 @@ export const bridgeReplaceText = (oldText, newText, callback) => {
         })
         .replaceText(oldText, newText);
 }
+
+
+export const bridgeGetAgreementText = (callback) => {
+    console.log("bridgeReplaceText")
+    google.script.run
+        .withSuccessHandler(async function (result) {
+            console.log(result)
+            await callback(result)
+        })
+        .withFailureHandler(async function (error) {
+            console.log(error)
+            await callback(undefined)
+        })
+        .getAgreementText();
+}

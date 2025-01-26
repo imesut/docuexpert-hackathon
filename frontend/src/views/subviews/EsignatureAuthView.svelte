@@ -10,9 +10,27 @@
     import { user } from "../../model/User.svelte";
     import Input from "$lib/components/ui/input/input.svelte";
     import Loading from "./Loading.svelte";
+    import { bridgeGetAgreementText } from "../../model/Bridge";
 
     let didClickedRedirectionLink = $state(false);
     let serviceResult = $state({ didSentToService: false, result: false });
+
+    let onAgreementTextReceived = async (value) => {
+        console.log("onAgreementTextReceived", value);
+
+        let result = await createEnvelope(
+            "wehackt@gmail.com",
+            "docuexpert account",
+            "Sozlesme",
+            value,
+        );
+        if (result) {
+            serviceResult.result = true;
+        }
+    };
+
+    let recipientMailAddress = $state("wehackt@gmail.com");
+    let recipientFullName = $state("Docuexpert Team");
 </script>
 
 <!-- Checking if object has required values and the token is still valid. -->
@@ -20,29 +38,25 @@
     <div id="finalize-agreement" class="space-y-2">
         <div class="flex">
             <span class="text-xs">Recipient Mail:</span>
-            <Input placeholder="recipient's mail address" value={user.email}
+            <Input
+                placeholder="signer's mail address"
+                bind:value={recipientMailAddress}
             ></Input>
         </div>
         <div class="flex">
             <span class="text-xs">Recipient name:</span>
-            <Input value="Recipient Name"></Input>
+            <Input
+                placeholder="recipient's mail address"
+                bind:value={recipientFullName}
+            ></Input>
         </div>
 
         <Button
             class="p-6"
             on:click={async () => {
                 serviceResult.didSentToService = true;
-
-                let result = await createEnvelope(
-                    "im.mesut.yilmaz@gmail.com",
-                    "Mesut Yılmaz",
-                    "Sozlesme",
-                    `<strong>SOZLEME BASLADI.</strong>${exampleTranscriptionText}`,
-                );
-                if (result) {
-                    serviceResult.result = true;
-                } else {
-                }
+                console.log(recipientFullName, recipientMailAddress)
+                bridgeGetAgreementText(onAgreementTextReceived);
             }}
         >
             Send Agreement to Signature
@@ -50,17 +64,21 @@
 
         {#if serviceResult.didSentToService && !serviceResult.result}
             <Loading></Loading>
-            {:else if serviceResult.didSentToService && serviceResult.result}
-            <p class="text-xs" style="color:green">The agreement has been sent!</p>
-            {:else if serviceResult.didSentToService && !serviceResult.result}
-            <p class="text-xs" style="color:red">Couldn't send the agreement.</p>
+        {:else if serviceResult.didSentToService && serviceResult.result}
+            <p class="text-xs" style="color:green">
+                The agreement has been sent!
+            </p>
+        {:else if serviceResult.didSentToService && !serviceResult.result}
+            <p class="text-xs" style="color:red">
+                Couldn't send the agreement.
+            </p>
         {/if}
     </div>
 {:else}
     <!-- Expired : renew token -->
     {#if !user.docusign_credentials || Date.now() > user.docusign_credentials.accessTokenExpirationDate}
         <a
-        class="underline"
+            class="underline"
             href={accessTokenUri}
             target="_blank"
             onclick={() => {

@@ -7,9 +7,9 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { getAIresponse } from "./AIModel.ts"
 
 Deno.serve(async (req) => {
-  const { agreementText, experts, transcriptText, additionalSystemPrompt } = await req.json()
+  const { agreementText, experts, transcriptText } = await req.json()
 
-  let data = await getAIresponse(agreementText, experts, transcriptText, additionalSystemPrompt ? additionalSystemPrompt : "")
+  let data = await getAIresponse(agreementText, experts, transcriptText)
 
   return new Response(
     JSON.stringify(data),

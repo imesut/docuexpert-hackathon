@@ -71,3 +71,10 @@ function replaceText(oldText, newText){
       return undefined
   }
   
+  
+  function getAgreementText(){
+    var doc = DocumentApp.getActiveDocument();
+    var body = doc.getBody();
+    let agreementText = body.getText();
+    return agreementText
+}
