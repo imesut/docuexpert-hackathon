@@ -277,10 +277,14 @@ export const getAIresponse = async (agreement: string, experts: [], transcript: 
     }
 
     let json = await result.json()
+    console.log("claude result", json)
     let stringifiedObject = json["content"][0]["text"]
+    console.log("claude result stringifiedObject", stringifiedObject)
 
-    let object = parseJSONResponse(stringifiedObject)
+    let jsonObject = parseJSONResponse(stringifiedObject)
+    console.log("claude result jsonObject", jsonObject)
 
-    return { response: object }
+
+    return jsonObject
 }
 
