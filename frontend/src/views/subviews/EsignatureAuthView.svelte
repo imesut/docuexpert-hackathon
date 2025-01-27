@@ -63,7 +63,7 @@
         </Button>
 
         {#if serviceResult.didSentToService && !serviceResult.result}
-            <Loading></Loading>
+            <Loading id="signature_loading"></Loading>
         {:else if serviceResult.didSentToService && serviceResult.result}
             <p class="text-xs" style="color:green">
                 The agreement has been sent!

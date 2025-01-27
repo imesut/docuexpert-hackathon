@@ -6,15 +6,32 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { getAIresponse } from "./AIModel.ts"
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 Deno.serve(async (req) => {
-  const { agreementText, experts, transcriptText } = await req.json()
+  // This is needed if you're planning to invoke your function from a browser.
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
 
-  let data = await getAIresponse(agreementText, experts, transcriptText)
+  try {
+    const { agreementText, experts, transcriptText } = await req.json()
 
-  return new Response(
-    JSON.stringify(data),
-    { headers: { "Content-Type": "application/json" } },
-  )
+    let data = await getAIresponse(agreementText, experts, transcriptText)
+
+    return new Response(
+      JSON.stringify(data),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    )
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 400,
+    })
+  }
 })
 
 /* To invoke locally:

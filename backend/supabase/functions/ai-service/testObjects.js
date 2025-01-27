@@ -191,11 +191,11 @@ let exampleTranscript = `
     Yeah, have a nice weekend.    Bye-bye.
 `
 
-console.log(
-    {
-        "agreementText" : sampleAgreementText,
-        "experts" : defaultExperts,
-        "transcriptText": exampleTranscript,
-        "additionalSystemPrompt" : ""
-    }
-)
+// console.log(
+//     {
+//         "agreementText" : sampleAgreementText,
+//         "experts" : defaultExperts,
+//         "transcriptText": exampleTranscript,
+//         "additionalSystemPrompt" : ""
+//     }
+// )
