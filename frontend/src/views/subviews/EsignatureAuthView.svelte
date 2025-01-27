@@ -1,6 +1,5 @@
 <script>
     import { Button } from "$lib/components/ui/button";
-    import { exampleTranscriptionText } from "../../model/Data";
 
     import {
         accessTokenUri,
@@ -19,9 +18,11 @@
         console.log("onAgreementTextReceived", value);
 
         let result = await createEnvelope(
-            "wehackt@gmail.com",
-            "docuexpert account",
-            "Sozlesme",
+            recipientMailAddress !== ""
+                ? recipientMailAddress
+                : "wehackt@gmail.com",
+            recipientFullName !== "" ? recipientFullName : "docuexpert",
+            "Agreement",
             value,
         );
         if (result) {
@@ -44,7 +45,7 @@
             ></Input>
         </div>
         <div class="flex">
-            <span class="text-xs">Recipient name:</span>
+            <span class="text-xs">Recipient Name:</span>
             <Input
                 placeholder="recipient's mail address"
                 bind:value={recipientFullName}
@@ -55,7 +56,7 @@
             class="p-6"
             on:click={async () => {
                 serviceResult.didSentToService = true;
-                console.log(recipientFullName, recipientMailAddress)
+                console.log(recipientFullName, recipientMailAddress);
                 bridgeGetAgreementText(onAgreementTextReceived);
             }}
         >
