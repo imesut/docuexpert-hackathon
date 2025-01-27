@@ -13,7 +13,7 @@
         `    "new_version": "1.1 The Service Provider agrees to integrate its proprietary [Product/Service Name] ("Service") into the Client's website to enhance accessibility and user experience, in accordance with the clearly defined technical specifications outlined in Exhibit A. The technical specifications in Exhibit A shall be defined in a clear and unambiguous manner to avoid any interpretation issues.",\n` +
         `    "old_version": "1.1 The Service Provider agrees to integrate its proprietary [Product/Service Name] ("Service") into the Client's website to enhance accessibility and user experience, in accordance with the clearly defined technical specifications outlined in Exhibit A.",\n` +
         '    "by": "TA",\n' +
-        '    "comment": "The Todo agent suggests adding more clarity to the technical specifications in Exhibit A to avoid any interpretation issues between the parties."\n' +
+        '    "comment": "The Todo expert suggests adding more clarity to the technical specifications in Exhibit A to avoid any interpretation issues between the parties."\n' +
         '  },\n' +
         '  {\n' +
         '    "new_version": "4.2 The Client is granted a non-exclusive, non-transferable license to use the Service for the duration of this Agreement solely for its internal operations. Upon termination, the Client shall immediately cease using the Service, unless otherwise agreed in writing. Customizations or enhancements developed specifically for the Client may remain accessible under a separate agreement or license. The Service Provider shall ensure that the Client retains access to any customizations or enhancements that the Client has paid for, even after the termination of this Agreement.",\n' +

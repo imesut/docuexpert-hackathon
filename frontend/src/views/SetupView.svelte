@@ -68,7 +68,7 @@
 <div class={Constants.sizes.onboardingContainerProp}>
     <!-- <h1 class="text-3xl">Setup</h1> -->
 
-    <h2 class="text-xl text-center">
+    <h2 class="text-xl text-center mt-4">
         Connect <span class="mt-4 mb-4 border p-2 rounded-md">
             docu<span class="text-purple-600">expert</span>
         </span> to Meeting Transcription Tool
@@ -86,8 +86,9 @@
     </p>
 
     <div class="text-center space-y-4">
-        Here's your webhook:
-        <u>{webhookUrl}</u>
+        <p>Here's your webhook:</p>
+        <p class="underline break-all">{webhookUrl}</p>
+
         <CopyButton text={webhookUrl} />
     </div>
 
@@ -128,10 +129,14 @@
                                     >
                                         {expert.abbvr}
                                     </Badge>
-                                    <span> {expert.name} </span>
-                                    {#if expert.isDefaultExpert}
-                                        <span class="text-xs">System</span>
-                                    {/if}
+                                    <span class="text-left">
+                                        {expert.name}
+                                        <i class="text-xs"
+                                            >{expert.isDefaultExpert
+                                                ? "Suggested"
+                                                : ""}</i
+                                        ></span
+                                    >
                                 </div>
                             </div>
                         </div>

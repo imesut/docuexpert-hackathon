@@ -85,8 +85,8 @@ user promts:
 Experts:
 [
     {
-        "abbvr": "TA",
-        "name": "Todo Agent",
+        "abbvr": "TE",
+        "name": "Todo Expert",
         "description": "Keeps track of what has been talked; uses your meeting records and your comments to follow actions.",
         "prompt": "You are an AI agent designed to process meeting transcripts and extract actionable items. For example, if the transcript mentions something like 'Alright, let’s revise section 4.2 to say this instead...', your task is to identify the following in JSON format: 1. Original Version: The original text of the section before revision. 2. Updated Version: The revised version of the section. 3. Explanation: A brief explanation summarizing what was said during the meeting that led to this change and why the section was revised."
     },
@@ -218,7 +218,7 @@ Example respons:
 }
 `
 
-function removeQuotes(text) {
+function removeQuotes(text : string) {
     return text.replace(/["']/g, '');
 }
 
