@@ -281,6 +281,6 @@ export const getAIresponse = async (agreement: string, experts: [], transcript: 
 
     let object = parseJSONResponse(stringifiedObject)
 
-    return { response:  }
+    return { response: object }
 }
 

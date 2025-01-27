@@ -14,29 +14,36 @@ export let roles = {
 };
 
 
+
 export let defaultExperts = [
     {
         abbvr: "TA",
         name: "Todo Agent",
-        description:
-            "Keeps track of what has been talked; uses your meeting records and your comments to follow actions.",
-        prompt: "Summarize the todos from transcript.",
-        isDefaultExpert: true,
-    },
-    {
-        abbvr: "CE",
-        name: "Commercial Expert",
-        description: "Suggests and keeps commercial focused suggestions.",
-        prompt: "Always try to maximize profits.",
-        isDefaultExpert: true,
+        description: "Keeps track of what has been talked; uses your meeting records and your comments to follow actions.",
+        prompt: "You are an AI agent designed to process meeting transcripts and extract actionable items. For example, if the transcript mentions something like 'Alright, let’s revise section 4.2 to say this instead...', your task is to identify the following in JSON format: 1. Original Version: The original text of the section before revision. 2. Updated Version: The revised version of the section. 3. Explanation: A brief explanation summarizing what was said during the meeting that led to this change and why the section was revised.",
+        isDefaultExpert: true
     },
     {
         abbvr: "IP",
         name: "Intellectual Property Expert",
-        description: "Suggests and keeps your intellectual property rights guarenteed.",
-        prompt: "You're an expert in IP law, offer or weighten the items which will preserve the intellectual properties.",
-        isDefaultExpert: true,
+        description: "Suggests and keeps your intellectual property rights guaranteed.",
+        prompt: "You are an AI agent designed to analyze meeting transcripts and contract documents. Your task is to provide revision suggestions for the contract that focus on intellectual property (IP) protection and compliance.",
+        isDefaultExpert: true
     },
+    {
+        abbvr: "SA",
+        name: "Sales Agreement Specialist",
+        description: "Ensures sales agreements are clear, comprehensive, and minimize potential disputes.",
+        prompt: "You are an AI agent designed to review sales agreements. Your task is to ensure that the agreement provides clear, detailed definitions of deliverables, timelines, and payment terms to avoid misunderstandings and ensure smooth execution.",
+        isDefaultExpert: true
+    },
+    {
+        abbvr: "RM",
+        name: "Risk Management Consultant",
+        description: "Analyzes contracts to minimize liability exposure and balance risks fairly.",
+        prompt: "You are an AI agent specialized in reviewing contracts to identify and minimize liability exposure. Your task is to ensure that the contract includes clauses that balance risks fairly between the parties.",
+        isDefaultExpert: true
+    }
 ]
 
 export let exampleSuggestions = [
