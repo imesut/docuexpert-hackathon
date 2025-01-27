@@ -18,7 +18,6 @@ export let inquireAI = async (agreementText : string, experts : [], transcriptTe
     let jsonSanitized = replaceNewlines(jsonText)
 
     const response = await fetch(aiBaseUrl, {
-        mode: "no-cors",
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -28,10 +27,10 @@ export let inquireAI = async (agreementText : string, experts : [], transcriptTe
 
     if (!response.ok) {
         const errorText = await response.text();
-        console.error('Envelope creation failed:', errorText);
-        return undefined;
+        console.error('AI model response failed:', errorText);
+        return {error : errorText};
     }
 
     const result = await response.json();
-    return result.response as Suggestion[];
+    return result.suggestions as Suggestion[];
 }

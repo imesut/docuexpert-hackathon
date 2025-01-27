@@ -15,7 +15,14 @@
   // Google App Script Binded callback method
   const onUserEmailReceived = async (value) => {
     console.log("onUserEmailReceived", value);
-    user.email = value;
+    if(value){
+      user.email = value;
+    } else {
+      // There is an annoying problem on Google Apps Script
+
+      user.email = "wehackt@gmail.com"
+    }
+   
     await fetchUser();
   };
 
@@ -52,6 +59,7 @@
 </main>
 
 <Button
+style="margin-top : 1200px"
   on:click={() => {
     let newPhase = OnboardingPhase.not_onboarded;
     updateUserObject(newPhase).then((userResponse) => {

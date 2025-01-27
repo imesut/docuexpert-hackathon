@@ -21,11 +21,13 @@ Deno.serve(async (req) => {
     const { agreementText, experts, transcriptText } = await req.json()
 
     let data = await getAIresponse(agreementText, experts, transcriptText)
+    let dataForResponsePayload = JSON.stringify(data)
 
-    return new Response(
-      JSON.stringify(data),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    )
+    let response = new Response(dataForResponsePayload, { headers: { ...corsHeaders, "Content-Type": "application/json" } })
+    console.log("service is returning response:", response)
+
+    return response
+
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

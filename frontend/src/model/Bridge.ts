@@ -40,10 +40,10 @@ export const bridgeReplaceText = (oldText, newText, callback) => {
 
 
 export const bridgeGetAgreementText = (callback) => {
-    console.log("bridgeReplaceText")
+    console.log("bridgeGetAgreementText")
     google.script.run
         .withSuccessHandler(async function (result) {
-            console.log(result)
+            // console.log(result)
             await callback(result)
         })
         .withFailureHandler(async function (error) {

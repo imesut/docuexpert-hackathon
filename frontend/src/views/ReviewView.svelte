@@ -38,12 +38,6 @@
     let suggestions = $state({ suggestions: [] });
 
     let onAgreementTextReceived = async (value) => {
-        // console.log(
-        //     "ReviewView",
-        //     "onAgreementTextReceived",
-        //     "agreementText",
-        //     value,
-        // );
 
         let transcriptText = transcripts[selectedTranscript.index].body;
         let suggestionsResult = await inquireAI(
@@ -53,15 +47,7 @@
         );
 
         console.log("suggestionsResult", suggestionsResult)
-
-        // console.log( "ReviewView", "onAgreementTextReceived", "json stringify", JSON.stringify({
-        //         transcriptText: transcriptText,
-        //         agreementText: agreementText,
-        //     }),
-        // );
-
-        // console.log("ReviewView", "onAgreementTextReceived", "agents / transcript", transcriptText)
-
+        
         if (suggestionsResult) {
             suggestions.suggestions = suggestionsResult;
         }

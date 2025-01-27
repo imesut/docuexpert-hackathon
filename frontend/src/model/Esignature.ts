@@ -101,7 +101,7 @@ const getDocusignUserCredentials = async () => {
 
 export const createEnvelope = async (recipientEmail: string, recipientFullName: string, documentTitle: string, htmlContent: string) : Promise<object|undefined> => {
     console.log("creating envelope with user credentials")
-    const base64Document = btoa(htmlContent);
+    const base64Document = btoa(unescape(encodeURIComponent(htmlContent)));
 
     const envelope = {
         emailSubject: documentTitle,
