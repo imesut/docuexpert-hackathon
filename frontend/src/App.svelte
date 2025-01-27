@@ -1,12 +1,7 @@
 <script>
   import "./app.css";
-  // @ts-ignore
   import { Button } from "$lib/components/ui/button";
-  // @ts-ignore
-  import * as Select from "$lib/components/ui/select";
   import { ModeWatcher } from "mode-watcher";
-  // @ts-ignore
-  import OnboardingPersonaStage from "./views/RoleSelection.svelte";
   import SetupView from "./views/SetupView.svelte";
   import ReviewView from "./views/ReviewView.svelte";
   import { fetchUser, user, updateUserObject } from "./model/User.svelte";
@@ -15,18 +10,28 @@
   import { onMount } from "svelte";
   import Loading from "./views/subviews/Loading.svelte";
   import Bar from "./views/subviews/Bar.svelte";
+  import { bridgeGetEmail } from "./model/Bridge";
 
-  const onUserEmailReceived = (value) => {
-    console.log("onUserEmailReceived", value)
-  }
+  // Google App Script Binded callback method
+  const onUserEmailReceived = async (value) => {
+    console.log("onUserEmailReceived", value);
+    user.email = value;
+    await fetchUser();
+  };
 
   // Fetching initial variables from Google App Script.
-  onMount(() => {
+  onMount(async () => {
+    console.log("mounted");
     // @ts-ignore
     let config = window.globalConfig;
+    // if config is set on the intial frame while app script creating the window for us.
     if (config) {
       user.email = config.email;
-      fetchUser();
+      // no need to await, can be removable after a regression test
+      await fetchUser();
+    } else {
+      // Sometimes Apps Script cannot inject the user info, so trigger a retrieve method, then update the user object globally.
+      bridgeGetEmail(onUserEmailReceived);
     }
   });
 </script>

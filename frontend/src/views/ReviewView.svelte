@@ -38,8 +38,12 @@
     let suggestions = $state({ suggestions: [] });
 
     let onAgreementTextReceived = async (value) => {
-
-        console.log("ReviewView", "onAgreementTextReceived", "agreementText", value)
+        // console.log(
+        //     "ReviewView",
+        //     "onAgreementTextReceived",
+        //     "agreementText",
+        //     value,
+        // );
 
         let transcriptText = transcripts[selectedTranscript.index].body;
         let suggestionsResult = await inquireAI(
@@ -48,8 +52,13 @@
             transcriptText,
         );
 
+        console.log("suggestionsResult", suggestionsResult)
 
-        console.log("ReviewView", "onAgreementTextReceived", "json stringify", JSON.stringify({"transcriptText" : transcriptText, "agreementText" : agreementText}))
+        // console.log( "ReviewView", "onAgreementTextReceived", "json stringify", JSON.stringify({
+        //         transcriptText: transcriptText,
+        //         agreementText: agreementText,
+        //     }),
+        // );
 
         // console.log("ReviewView", "onAgreementTextReceived", "agents / transcript", transcriptText)
 
@@ -78,7 +87,7 @@
 <div class="w-full flex flex-col space-y-4">
     <div id="select-transcript" class="flex flex-col space-y-2 mb-4">
         {#await promise}
-            <Loading text="Fetching Transcriptions"></Loading>
+            <Loading id="fetch_transcriptions_loading" text="Fetching Transcriptions"></Loading>
         {:then loadedData}
             <h2 class="text-xl">Select a transcript</h2>
             <i class="text-xs">
@@ -134,8 +143,10 @@
                                             class="h-[60vh] w-[80vw] mx-auto rounded-md border"
                                         >
                                             <pre>
-                        {exampleTranscriptionText}
-                    </pre>
+                                                {transcripts[
+                                                    selectedTranscript.index
+                                                ].body}
+                                        </pre>
                                         </ScrollArea>
                                     </div>
                                 </Drawer.Description>
@@ -165,7 +176,12 @@
                 class="p-6"
                 on:click={() => {
                     didUserInquiredAI = true;
-                    console.log(user.custom_agents, $state.snapshot(transcripts[selectedTranscript.index].body))
+                    console.log(
+                        user.custom_agents,
+                        $state.snapshot(
+                            transcripts[selectedTranscript.index].body,
+                        ),
+                    );
                     bridgeGetAgreementText(onAgreementTextReceived);
                 }}
             >
@@ -182,8 +198,8 @@
                 {#each suggestions.suggestions as suggestion}
                     <SuggestionCard {expertNames} {suggestion}></SuggestionCard>
                 {/each}
-                {:else}
-                <Loading></Loading>
+            {:else}
+                <Loading id="actionable-insight_loading"></Loading>
             {/if}
         </div>
     {/if}
