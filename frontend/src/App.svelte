@@ -15,13 +15,14 @@
   // Google App Script Binded callback method
   const onUserEmailReceived = async (value) => {
     console.log("onUserEmailReceived", value);
-    if(value){
-      user.email = value;
-    } else {
-      // There is an annoying problem on Google Apps Script
+    user.email = "wehackt@gmail.com"
+    // if(value){
+    //   user.email = value;
+    // } else {
+    //   // There is an annoying problem on Google Apps Script
 
-      user.email = "wehackt@gmail.com"
-    }
+    //   user.email = "wehackt@gmail.com"
+    // }
    
     await fetchUser();
   };
@@ -69,10 +70,3 @@ style="margin-top : 1200px"
 >
   Reset Flow</Button
 >
-<!-- <pre>
-  {JSON.stringify(user, null, 2)}
-</pre> -->
-
-<!-- <Button on:click={() => {
-  createDocuSignAgreement("Hello", "Sample Agreement Text", "im.mesut.yilmaz@gmail.com", "Mesut Yılmaz")
-}}>Send to Sign</Button> -->

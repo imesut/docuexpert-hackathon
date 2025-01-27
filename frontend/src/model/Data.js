@@ -1,15 +1,15 @@
 export let roles = {
     seller: {
         role_name: "Supplier",
-        prompt: "I want to be sure about my services can be sold.",
+        prompt: "I want to ensure the agreement protects my ability to deliver services without unreasonable demands or risks.",
     },
     buyer: {
         role_name: "Buyer",
-        prompt: "I want to be sure about my company can benefit from this purchase.",
+        prompt: "I want to confirm that this agreement secures my company’s ability to benefit from the services being provided.",
     },
     legal_person: {
         role_name: "Legal Professional",
-        prompt: "I want to be sure about this agreement guarantees the legal compliance and preserve our rights.",
+        prompt: "I want to ensure this agreement fully reflects the intent and and preserve our rights.",
     },
 };
 
@@ -17,8 +17,8 @@ export let roles = {
 
 export let defaultExperts = [
     {
-        abbvr: "TA",
-        name: "Todo Agent",
+        abbvr: "TE",
+        name: "Todo Expert",
         description: "Keeps track of what has been talked; uses your meeting records and your comments to follow actions.",
         prompt: "You are an AI agent designed to process meeting transcripts and extract actionable items. For example, if the transcript mentions something like 'Alright, let’s revise section 4.2 to say this instead...', your task is to identify the following in JSON format: 1. Original Version: The original text of the section before revision. 2. Updated Version: The revised version of the section. 3. Explanation: A brief explanation summarizing what was said during the meeting that led to this change and why the section was revised.",
         isDefaultExpert: true

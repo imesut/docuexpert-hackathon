@@ -2,7 +2,7 @@
     export let Constants = {
         sizes: {
             onboardingContainerProp : "place-items-center space-y-8",
-            onboardingWidth : "w-80"
+            onboardingWidth : "w-full"
 
         },
         text: {

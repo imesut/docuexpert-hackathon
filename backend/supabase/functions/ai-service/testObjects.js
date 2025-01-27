@@ -74,8 +74,8 @@ Date: [Date]
 
 let defaultExperts = [
     {
-        abbvr: "TA",
-        name: "Todo Agent",
+        abbvr: "TE",
+        name: "Todo Expert",
         description:
             "Keeps track of what has been talked; uses your meeting records and your comments to follow actions.",
         prompt: "Summarize the todos from transcript.",
